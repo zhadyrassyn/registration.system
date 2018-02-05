@@ -1,0 +1,6 @@
+dependencies {
+    compile project(":registration.controller")
+
+    compile("org.springframework.boot:spring-boot-starter-web")
+    testCompile("junit:junit")
+}

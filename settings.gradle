@@ -1,0 +1,3 @@
+include 'registration.client'
+include 'registration.controller'
+include 'registration.stand'
