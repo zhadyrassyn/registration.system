@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
  * Song G-Eazy & Halsey - Him & I
  */
 @SpringBootApplication
-@ComponentScan(basePackages = {"kz.edu.sdu.controller"})
+@ComponentScan(basePackages = {"kz.edu.sdu"})
 public class StandLauncher {
     public static void main(String[] args) {
         SpringApplication.run(StandLauncher.class, args);

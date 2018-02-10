@@ -4,3 +4,7 @@
 *.ipr
 *.iws
 .gradle
+
+registration.controller/build
+registration.stand/build
+registration.client/build
