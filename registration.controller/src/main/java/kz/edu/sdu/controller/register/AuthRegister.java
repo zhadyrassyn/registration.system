@@ -1,6 +1,7 @@
 package kz.edu.sdu.controller.register;
 
 import kz.edu.sdu.controller.model.AuthRequestInfo;
+import kz.edu.sdu.controller.model.AuthResponseInfo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mobile.device.Device;
 
@@ -10,4 +11,7 @@ import org.springframework.mobile.device.Device;
 public interface AuthRegister {
     ResponseEntity<?> createAuthenticationToken(AuthRequestInfo request, Device device);
 
+    AuthResponseInfo signup(AuthRequestInfo request);
+
+    String verifyToken(String token);
 }

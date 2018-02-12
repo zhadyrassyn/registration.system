@@ -7,6 +7,23 @@ spring:
   jackson:
     serialization:
       INDENT_OUTPUT: true
+  mail:
+    properties:
+      mail:
+        transport:
+          protocol: smtp
+        smtp:
+          auth: true
+          starttls:
+            enabled: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+    host: smtp.gmail.com
+    port: 587
+    username: dandibobo537@gmail.com
+    password: ENC(PbC53MnskBZYTDZFbLNLyF2ghwtkvatk)
+
 
 jwt:
   header: Authorization
@@ -16,3 +33,4 @@ jwt:
     authentication:
       path: auth
       refresh: refresh
+

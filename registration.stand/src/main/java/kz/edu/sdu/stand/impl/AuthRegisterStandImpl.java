@@ -3,10 +3,16 @@ package kz.edu.sdu.stand.impl;
 import kz.edu.sdu.controller.model.AuthRequestInfo;
 import kz.edu.sdu.controller.model.AuthResponseInfo;
 import kz.edu.sdu.controller.register.AuthRegister;
+import kz.edu.sdu.stand.email.EmailSender;
+import kz.edu.sdu.stand.impl.model.UserDto;
 import kz.edu.sdu.stand.jwt.JwtTokenUtil;
+import kz.edu.sdu.stand.repository.TokenRepository;
+import kz.edu.sdu.stand.repository.UserRepository;
+import kz.edu.sdu.stand.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mobile.device.Device;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,6 +40,15 @@ public class AuthRegisterStandImpl implements AuthRegister {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private EmailSender emailSender;
+
+    @Autowired
+    private TokenRepository tokenRepository;
+
     @Override
     public ResponseEntity<?> createAuthenticationToken(AuthRequestInfo request, Device device) {
         // Perform the security
@@ -51,5 +66,31 @@ public class AuthRegisterStandImpl implements AuthRegister {
 
         // Return the token
         return ResponseEntity.ok(new AuthResponseInfo(token));
+    }
+
+    @Override
+    public AuthResponseInfo signup(AuthRequestInfo request) {
+        UserDto user = userRepository.findByEmail(request.email);
+        if(user == null) {
+            String token = Utils.generateString();
+            String link = String.format("http://localhost:8080/auth/token/%s", token);
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(request.email);
+            message.setSubject("Регистрация");
+            message.setText("Здравствуйте. Для подтверждения регистрации нажите на ссылку ниже\n\n" + link);
+            emailSender.sendMessage(message);
+
+            userRepository.save(request.email, request.password);
+        } else {
+
+        }
+        return new AuthResponseInfo("token");
+    }
+
+    @Override
+    public String verifyToken(String token) {
+        Long id = tokenRepository.getIdByToken(token);
+        userRepository.setStatus(id, "Activated");
+        return "verified";
     }
 }

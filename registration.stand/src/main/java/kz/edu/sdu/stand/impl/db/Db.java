@@ -23,13 +23,13 @@ public class Db {
     public Map<Integer, RoleDto> roles = new HashMap<>();
     public Map<Long, Integer> mapUserToRole = new HashMap<>();
     public Map<Integer, CityDto> cities = new HashMap<>();
-    private AtomicLong counter = new AtomicLong();
+    public Map<Long, String> mapUserIdToToken = new HashMap<>();
+    public AtomicLong counter = new AtomicLong();
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
     public Db() {
         init();
